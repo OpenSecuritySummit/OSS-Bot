@@ -58,6 +58,7 @@ class API_OSS_Bot:
         return text, attachments
 
     def process_event(self, slack_event):
+
         attachments = []
         try:
             event_type            = slack_event.get('type')
@@ -75,11 +76,9 @@ class API_OSS_Bot:
             return None, None
 
         channel_id = slack_event.get("channel")  # channel command was sent in
-        team_id    = slack_event.get("team_id")
-        #log_debug("team id: {0}".format(team_id))
-        if channel_id is None or team_id is None:
+        if channel_id is None:
             return { "text": text, "attachments": attachments }
-        return self.send_message(channel_id, team_id, text, attachments)
+        return self.send_message(channel_id, text, attachments)
 
 
     def send_message(self,channel_id, text, attachments):
@@ -93,5 +92,4 @@ class API_OSS_Bot:
         request.add_header("Content-Type","application/x-www-form-urlencoded")
         context  = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
         response = urllib.request.urlopen(request,context = context).read()
-
         return json.loads(response.decode())

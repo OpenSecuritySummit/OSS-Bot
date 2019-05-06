@@ -25,3 +25,7 @@ class test_run_command(Test_Helper):
     def test_invoke(self):
         self.update_lambda()
         self.result = self.aws_lambda.invoke({'event': {'type': 'message', 'text': 'help'}})
+
+    def test_invoke_with_channel(self):
+        self.update_lambda()
+        self.result = self.aws_lambda.invoke({'event': {'type': 'message', 'text': 'help', "channel": "DJ8UA0RFT"}})
