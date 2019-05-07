@@ -17,7 +17,7 @@ class OSS_Setup:
     def setup_test_environment(self):
         # todo: add check when running in AWS
         Globals.aws_session_profile_name = self.profile_name
-        Globals.aws_session_region_name = self.region_name
+        Globals.aws_session_region_name  = self.region_name
         return self
 
     def set_up_buckets(self):
