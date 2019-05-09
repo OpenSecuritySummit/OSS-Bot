@@ -21,13 +21,19 @@ class Load_Data_Elk:
     def elastic(self):
         if self._elastic is None:
             self._elastic = Elastic_Search(index=self.index_id, aws_secret_id = self.aws_secret_id)
+        return self._elastic
+
+    def set_elk_index(self, index_id):
+        self.index_id = index_id
+        self._elastic = None        # to force reseting the connection
+        return self
 
     def get_data(self,path):
         url = "{0}{1}".format(self.oss_server, path)
         return requests.get(url).json()
 
-    def send_data_to_elk(self, data, delete_index=False):
-        if delete_index:
+    def send_data_to_elk(self, data, create_index=False):
+        if create_index:
             self.elastic().delete_index().create_index()
         try:
             records_added = self.elastic().add_bulk(data)
@@ -48,7 +54,7 @@ class test_Load_Data_Elk(Test_Helper):
 
     def test_send_data_to_elk(self):
         data = self.load_data_elk.get_data('/api/index.json')
-        self.result = self.load_data_elk.send_data_to_elk(data, delete_index=True)
+        self.result = self.load_data_elk.send_data_to_elk(data, create_index=True)
 
     def test_data_participants(self):
         path = '/participant/api/index.json'
@@ -57,16 +63,15 @@ class test_Load_Data_Elk(Test_Helper):
 
 
     def test_load_local_data(self):
+        index_id = 'participants'
         data = requests.get('http://localhost:1313/participant/json/').json()
-        for item in data:
-            print(item.get('title'),item.get('word_count'))
+        self.result = self.load_data_elk.set_elk_index   (index_id)                 \
+                                        .send_data_to_elk(data, create_index=True)
 
-    def test_find_problematic_record(self):
-        data = self.load_data_elk.get_data('/api/index.json')
-        self.load_data_elk.elastic()
-        for item in data:
-            Dev.pprint(item)
-            break
+        #for item in data:
+        #    print(item.get('title'),item.get('word_count'))
+
+
 
 
 
