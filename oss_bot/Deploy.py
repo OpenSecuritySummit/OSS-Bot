@@ -11,6 +11,10 @@ class Deploy:
     def __init__(self):
         self.oss_setup     = OSS_Setup()
 
+    def setup(self):
+        self.oss_setup.setup_test_environment()
+        return self
+
     def get_package(self, lambda_name):
         package = Lambda_Package(lambda_name)
         package._lambda.set_s3_bucket(self.oss_setup.s3_bucket_lambdas) \
@@ -33,6 +37,7 @@ class Deploy:
         package.add_pbx_gs_python_utils()
         package.update()
         #return package.update_code()
+        return package
 
     def deploy_lambda__slack_message(self):
         package = self.get_package('pbx_gs_python_utils_lambdas_utils_slack_message')

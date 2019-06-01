@@ -30,11 +30,10 @@ class API_OSS_Bot:
     def handle_command(self, slack_event):
         try:
             if slack_event.get('text'):
-                command = slack_event.get('text').replace('<@UDK5W7W3T>', '') \
-                                                 .replace('<@UG2BHLSSU>', '') \
-                                                 .strip()                     # remove the @gsbot names (PBX and GS-CST) from the message (this needs a better solution)
+                command = slack_event.get('text').replace('<@UJ3RRH17C>', '').strip()           # UJ3RRH17C is the oss_bot slack ids
                 if not command:
-                    return None, None
+                    command = 'hello'
+                    #return None, None
                 # log_debug('command: {0}  |  team_id: {1} | channel: {2} | user: {3} '.format(command,
                 #                                                                              slack_event.get('team_id'),
                 #                                                                              slack_event.get('channel'),
@@ -47,7 +46,8 @@ class API_OSS_Bot:
                     method_params      = command.split(' ')[1:]
                     (text,attachments) = method(slack_event,method_params)                       # invoke method
                 else:
-                    text = ":exclamation: OSS bot command `{0}` not found. Use `gsbot help` to see a list of available commands".format(method_name)
+                    text = ":exclamation: OSS bot command `{0}` not found. Use `oss_bot help` to see a list of available commands".format(method_name)
+                    #text = "text = {0}, command= {1}".format(slack_event.get('text'), command )
                     attachments = []
             else:
                 return None, None
