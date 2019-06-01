@@ -3,6 +3,7 @@ from pbx_gs_python_utils.utils.Misc import Misc
 from pbx_gs_python_utils.utils.slack.Slack_Commands_Helper import Slack_Commands_Helper
 
 from oss_bot.api.commands.Site_Commands import Site_Commands
+from oss_bot.api.commands.FAQ_Commands import FAQ_Commands
 
 
 class OSS_Bot_Commands:                                      # move to separate class
@@ -43,5 +44,14 @@ class OSS_Bot_Commands:                                      # move to separate 
         return None,None
 
     @staticmethod
+    def faq(slack_event=None, params=None):
+        team_id = Misc.get_value(slack_event, 'team_id')
+        channel = Misc.get_value(slack_event, 'channel')
+        Slack_Commands_Helper(FAQ_Commands).invoke(team_id, channel, params)
+        return None,None
+
+    @staticmethod
     def version(*params):
         return OSS_Bot_Commands.gsbot_version,[]
+
+
