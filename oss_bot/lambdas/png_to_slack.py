@@ -22,6 +22,15 @@ def load_dependency(target):
         sys.path.append(tmp_dir)                                # add tmp_dir to the path that python uses to check for dependencies
     return Files.exists(tmp_dir)
 
+def upload_dependency(target):
+    s3        = S3()
+    s3_bucket = 'oss-bot-lambdas'
+    s3_file   = 'lambdas-dependencies/{0}.zip'.format(target)
+    path_libs = Files.path_combine('../../../_lambda_dependencies/', target)
+    if Files.not_exists(path_libs):
+        raise Exception("In Lambda upload_dependency, could not find dependency for: {0}".format(target))
+    s3.folder_upload(path_libs, s3_bucket, s3_file)
+    return s3.file_exists(s3_bucket, s3_file)
 
 def send_file_to_slack(file_path, title, bot_token, channel):                  # refactor into Slack_API class
 
