@@ -4,11 +4,11 @@ from pbx_gs_python_utils.utils.Misc import Misc
 
 class OSS_Bot_Commands:                                      # move to separate class
 
-    gsbot_version = 'v0.12'
+    gsbot_version = 'v0.22'
 
     @staticmethod
     def browser(slack_event=None, params=None):
-        return Lambda('osbot_browser.lambdas.lambda_browser').invoke({'params':params, 'data':slack_event}),[]
+        Lambda('osbot_browser.lambdas.lambda_browser').invoke_async({'params':params, 'data':slack_event}),[]
         return None,None
 
     @staticmethod

@@ -26,7 +26,13 @@ class Deploy:
         #               .set_role(self.oss_setup.role_lambdas)
         #return package.update_code()
         package = self.get_package('osbot_browser.lambdas.lambda_browser')
-        return package.update_code()
+        source_folder = Files.path_combine(__file__,'../../modules/OSBot-Browser/osbot_browser')
+        #return source_folder, Files.exists(source_folder)
+        package.add_folder(source_folder)
+        package.add_module('osbot_aws')
+        package.add_pbx_gs_python_utils()
+        package.update()
+        #return package.update_code()
 
     def deploy_lambda__slack_message(self):
         package = self.get_package('pbx_gs_python_utils_lambdas_utils_slack_message')

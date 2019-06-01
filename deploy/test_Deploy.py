@@ -21,7 +21,7 @@ class test_Deploy(TestCase):
         self.deploy.deploy_lambda__oss_bot()
 
     def test_deploy_lambda__browser(self):
-        self.deploy.deploy_lambda__browser()
+        self.result = self.deploy.deploy_lambda__browser()
 
     def test_deploy_lambda__slack_message(self):
         result = self.deploy.deploy_lambda__slack_message()

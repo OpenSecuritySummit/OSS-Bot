@@ -38,8 +38,17 @@ class test_run_command(Test_Helper):
         self.result = self.aws_lambda.invoke(payload)
 
     def test__invoke__screenshot(self):
-        Deploy().deploy_lambda__browser()
-        payload = {"params": ["screenshot", "https://www.google.com/asd"],
+        deploy = Deploy()
+        deploy.oss_setup.setup_test_environment()
+        deploy.deploy_lambda__browser()
+        payload = {"params": ["screenshot", "https://www.google.com/images", "1200"],
                    'data': {'channel': 'DJ8UA0RFT'}}
         self.result = self.aws_lambda.invoke(payload)
         #self.png_data = self.aws_lambda.invoke(payload)
+
+    def test__invoke__screenshot__no_channel(self):
+        deploy = Deploy()
+        deploy.oss_setup.setup_test_environment()
+        deploy.deploy_lambda__browser()
+        payload = {"params": ["screenshot", "https://www.google.com/images"]}
+        self.result = self.aws_lambda.invoke(payload)
