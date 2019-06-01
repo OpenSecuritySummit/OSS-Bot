@@ -4,6 +4,4 @@ def run(data, context):
         from oss_bot.api.Slack_Handler import Slack_Handler
         return Slack_Handler().run(data)
     except Exception as error:
-        #from osbot.api.API_GS_Bot import log_debug
-        #log_debug("Error processing request: {0}".format(error), data=data, category='gs_bot')
-        return "500 Error"
+        return "500 Error: {0}".format(error)

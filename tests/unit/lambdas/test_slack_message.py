@@ -19,7 +19,7 @@ class test_slack_message(Test_Helper):
         #API_OSS_Bot()
         payload = {
             'text': 'this is a text',
-            'attachments': [],
+            'attachments': [{'text': 'an attach', 'color':'good'}],
             'channel': channel
         }
         self.result = self.aws_lambda.invoke(payload)

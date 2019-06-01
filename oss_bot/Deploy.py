@@ -25,7 +25,8 @@ class Deploy:
         #package._lambda.set_s3_bucket(self.oss_setup.s3_bucket_lambdas) \
         #               .set_role(self.oss_setup.role_lambdas)
         #return package.update_code()
-        return self.get_package('osbot_browser.lambdas.lambda_browser').update_code()
+        package = self.get_package('osbot_browser.lambdas.lambda_browser')
+        return package.update_code()
 
     def deploy_lambda__slack_message(self):
         package = self.get_package('pbx_gs_python_utils_lambdas_utils_slack_message')
@@ -35,8 +36,26 @@ class Deploy:
         package.add_pbx_gs_python_utils()
         package.delete()
         package.update()
-        return 123
 
+    def deploy_lambda_log_to_elk(self):
+        lambda_name = 'pbx_gs_python_utils_lambdas_utils_log_to_elk'
+        package = self.get_package(lambda_name)
+        package._lambda.handler = 'oss_bot.lambdas.log_to_elk.run'
+        package.add_module('oss_bot')
+        package.add_pbx_gs_python_utils()
+        #package.delete()
+        package.update()
+        return package
 
+    def deploy_lambda_png_to_slack(self):
+        lambda_name = 'utils_png_to_slack'
+        package = self.get_package(lambda_name)
+        package._lambda.handler = 'oss_bot.lambdas.png_to_slack.run'
+        package.add_module('osbot_aws')
+        package.add_module('oss_bot')
+        package.add_pbx_gs_python_utils()
+        #package.delete()
+        package.update()
+        return package
 
 

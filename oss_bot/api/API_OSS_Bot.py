@@ -85,8 +85,8 @@ class API_OSS_Bot:
         data     = urllib.parse.urlencode((("token"      , self.bot_token  ),               # oauth token
                                            ("channel"    , channel_id      ),               # channel to send message to
                                            ("team_id"    , self.team_id    ),
-                                           ("text"       , text            ),               # message's text
-                                           ("attachments", attachments     )))              # message's attachments
+                                           ("text"       ,  text            ),               # message's text
+                                           ("attachments", json.dumps(attachments)     )))              # message's attachments
         data     = data.encode("ascii")
         request  = urllib.request.Request(self.slack_url, data=data, method="POST" ) # send data back to Slack
         request.add_header("Content-Type","application/x-www-form-urlencoded")

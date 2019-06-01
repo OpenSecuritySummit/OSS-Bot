@@ -1,0 +1,3 @@
+[submodule "modules/OSBot-browser"]
+	path = modules/OSBot-browser
+	url = git@github.com:pbx-gs/OSBot-browser.git
