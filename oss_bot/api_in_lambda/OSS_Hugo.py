@@ -1,3 +1,5 @@
+import json
+
 from pbx_gs_python_utils.utils.Misc import Misc
 from oss_bot.api_in_lambda.Git_Lambda import Git_Lambda
 
@@ -23,7 +25,12 @@ class OSS_Hugo:
         return  OSS_Participant(name=user_name, folder_oss=self.repo_path)
 
     def participant_info(self, event):
-        return '....info goes here: {0}'.format(event)
+        self.git_lambda.pull()
+        name = event.get('name')
+        participant = self.participant_get(name)
+        if participant.exists():
+            return "```{0}```".format(json.dumps(participant.metadata(),indent=2))
+        return 'error: user not found'
 
     def participant_edit_field(self, event):
         name  = event.get('name')
@@ -43,7 +50,7 @@ class OSS_Hugo:
         participant = self.participant_get(name)
         if participant.exists():
             current_value = participant.field(field)
-            if current_value:
+            if current_value is not None:
                 if type(current_value) is list:
                     new_value = current_value.append(value)
                     participant.field(field, new_value)

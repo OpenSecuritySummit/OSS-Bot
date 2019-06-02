@@ -24,6 +24,9 @@ class Deploy:
     def deploy_lambda__oss_bot(self):
         return self.get_package('oss_bot.lambdas.oss_bot').update_code()
 
+    def deploy_lambda__git_lambda(self):
+        return self.get_package('oss_bot.lambdas.git_lambda').update_code()
+
     def deploy_lambda__browser(self):
         #package = Lambda_Package('osbot_browser.lambdas.lambda_browser')
         #package._lambda.set_s3_bucket(self.oss_setup.s3_bucket_lambdas) \

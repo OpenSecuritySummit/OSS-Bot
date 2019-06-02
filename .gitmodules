@@ -1,3 +1,6 @@
 [submodule "modules/OSBot-browser"]
 	path = modules/OSBot-browser
 	url = git@github.com:pbx-gs/OSBot-browser.git
+[submodule "modules/OSBot-Jupyter"]
+	path = modules/OSBot-Jupyter
+	url = git@github.com:pbx-gs/OSBot-Jupyter.git

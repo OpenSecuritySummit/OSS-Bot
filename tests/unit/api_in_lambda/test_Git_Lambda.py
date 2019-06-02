@@ -1,6 +1,6 @@
 from pbx_gs_python_utils.utils.Dev import Dev
 
-from oss_bot.api_lambda.Git_Lambda import Git_Lambda
+from oss_bot.api_in_lambda.Git_Lambda import Git_Lambda
 from oss_bot.helpers.Test_Helper import Test_Helper
 
 

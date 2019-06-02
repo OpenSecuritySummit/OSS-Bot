@@ -13,12 +13,21 @@ def use_command_class(slack_event, params, target_class):
 
 class OSS_Bot_Commands:                                      # move to separate class
 
-    gsbot_version = 'v0.32'
+    gsbot_version = 'v0.43'
 
     @staticmethod
     def browser(slack_event=None, params=None):
         Lambda('osbot_browser.lambdas.lambda_browser').invoke_async({'params':params, 'data':slack_event}),[]
         return None,None
+
+    @staticmethod
+    def jp(slack_event=None, params=None):
+        return OSS_Bot_Commands.jupyter(slack_event,params)
+
+    @staticmethod
+    def jupyter(slack_event=None, params=None):
+        Lambda('osbot_jupyter.lambdas.osbot').invoke_async({'params': params, 'data': slack_event}), []
+        return None, None
 
     @staticmethod
     def hello(slack_event=None, params=None):
