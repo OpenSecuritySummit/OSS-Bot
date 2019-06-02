@@ -6,34 +6,40 @@ from pbx_gs_python_utils.utils.Files import Files
 
 class Git_Lambda:
 
-    def __init__(self):
-        self.aws_secret     = 'git-oss2019'
+    def __init__(self,repo_name):
+        self.repo_name      = repo_name
+        self.aws_secret     = 'git-{0}'.format(self.repo_name)
         self.git_org        = None
         self.git_repo       = None
         self.path_temp      = '/tmp'
-        self.path_repo      = None
+        self.path_repo      = '{0}/{1}'.format(self.path_temp,repo_name)
         self.remote         = 'origin'
         self.branch         = 'master'
         self.author_name    = 'oss-bot-dinis'
-        self.author_email   = 'oss-bot@opensecsummit.org'
-        self.commit_message = 'changed in lambda'
+        self.author_email   = 'dinis@opensecsummit.org'
+        self.commit_message = 'Lambda auto-commit:'
+        self.exec_stdout    = None
+        self.exec_stderr    = None
         self.set_up_commit_user()
 
 
     def git_exec(self, *params,cwd=None):
         if cwd is None:
             cwd = self.path_repo
-        stdout, stderr = git.exec_command(*params,cwd=cwd)
-        return stdout.decode(),stderr.decode()
+        stdout, stderr  = git.exec_command(*params,cwd=cwd)
+        self.exec_stderr = stderr.decode()
+        self.exec_stdout = stdout.decode()
+        return self.exec_stdout
 
     def repo_url(self):
         data = Secrets(self.aws_secret).value_from_json_string()
-        #os.environ['GIT_USERNAME'] = data.get('username')      # not working
-        #os.environ['GIT_PASSWORD'] = data.get('password')
-        self.git_org               = data.get('git_org')
-        self.git_repo              = data.get('git_repo')
-        self.path_repo             = Files.path_combine(self.path_temp, self.git_repo)
-        return 'https://{0}:{1}@github.com/{2}/{3}.git'.format(data.get('username'),data.get('password'),self.git_org, self.git_repo)
+        return 'https://{0}:{1}@github.com/{2}/{3}.git'.format(data.get('username'),
+                                                               data.get('password'),
+                                                               data.get('git_org' ),
+                                                               self.repo_name)
+
+        # os.environ['GIT_USERNAME'] = data.get('username')      # not working
+        # os.environ['GIT_PASSWORD'] = data.get('password')
         #return 'https://github.com/{2}/{3}.git'.format(data.get('username'),data.get('password'),self.git_org, self.git_repo)
 
     def repo_files(self):
@@ -45,15 +51,35 @@ class Git_Lambda:
         os.environ['GIT_COMMITTER_NAME' ] = self.author_name
         os.environ['GIT_COMMITTER_EMAIL'] = self.author_email
 
+    def exists(self):
+        return Files.exists(self.path_repo)
 
     # git commands
 
-    def commit    (self): return self.git_exec('commit', '-a', '-m'         ,self.commit_message        )
-    def clone     (self): return self.git_exec('clone' , self.repo_url()    , cwd=self.path_temp        )
-    def log_pretty(self): return self.git_exec('log'   ,'--pretty=oneline'  ,'-n10'                     )
-    def pull      (self): return self.git_exec('pull'  , '--no-edit'        , self.remote, self.branch  )
-    def push      (self): return self.git_exec('push'  , self.remote        , self.branch               )
-    def status    (self): return self.git_exec('status')
+    def commit(self, message=None):
+        if message is None:
+            message = "{0}: {1}".format(self.commit_message, self.status())
+        self.git_exec('commit', '-a', '-m', message)
+        return self
+
+    def clone     (self):
+        if self.exists() is False:
+            self.git_exec('clone' , self.repo_url()    , cwd=self.path_temp)
+        return self
+
+    def log_pretty(self):
+        return self.git_exec('log', '--pretty=oneline', '-n10')
+
+    def pull(self):
+        self.git_exec('pull', '--no-edit', self.remote, self.branch)
+        return self
+
+    def push(self):
+        self.git_exec('push', self.remote, self.branch)
+        return self
+
+    def status (self):
+        return self.git_exec('status')
 
 
 

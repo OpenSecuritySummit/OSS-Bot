@@ -5,7 +5,7 @@ class OSS_Hugo:
     def __init__(self):
         self.repo_path = '/tmp/oss2019'
 
-    def edit_user(self):
+    def edit_user(self, user_name):
         import sys
         sys.path.append('/tmp/oss2019/notebooks/api')
         from oss_hugo.OSS_Participant import OSS_Participant
