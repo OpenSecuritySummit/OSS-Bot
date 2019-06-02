@@ -42,6 +42,13 @@ class test_git_lambda(Test_Helper):
 
         #assert self.aws_lambda.invoke(payload) == {'status': 'ok'}
 
+    def test_participant_url(self):
+        self.test_update_lambda()
+        payload = { 'action': 'participant_url',
+                    'name'  : 'OSS Bot'         ,
+                    'commit': False}
+        self.result = self.aws_lambda.invoke(payload)
+
     def test_participant_edit_field(self):
 
         payload = { 'action': 'participant_edit_field',

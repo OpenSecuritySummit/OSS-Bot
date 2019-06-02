@@ -3,8 +3,18 @@ from pbx_gs_python_utils.utils.Lambdas_Helpers import slack_message
 
 from oss_bot.api.commands import Site_Commands
 
+def send_screenshot_to_slack(path, channel, extra_params: list):
+    if path is None: path = ''
+    url = 'https://open-security-summit.org/' + path
+    from oss_bot.api.commands.OSS_Bot_Commands import OSS_Bot_Commands
+    params = ["screenshot", url]
+    params.extend(extra_params)
+    OSS_Bot_Commands().browser({'channel': channel}, params)
+
+
 
 class Participant_Commands:
+
 
     @staticmethod
     def info(team_id=None, channel=None, params=None):
@@ -15,6 +25,21 @@ class Participant_Commands:
                    'channel': channel            ,
                    'commit' : False              }
         aws_lambda.invoke_async(payload)
+
+    @staticmethod
+    def view(team_id=None, channel=None, params=None):
+        name = " ".join(params)
+        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
+        payload = {'action': 'participant_url',
+                   'name'  : name,
+                   'commit': False}
+        result = aws_lambda.invoke(payload)
+        if result.get('status') == 'ok':
+            path = result.get('data')
+            send_screenshot_to_slack(path,channel,[1200])
+        else:
+            return ":red_circle: error, couldn't find url for `{0}".format(name)
+
 
     @staticmethod
     def edit(team_id=None, channel=None, params=None):

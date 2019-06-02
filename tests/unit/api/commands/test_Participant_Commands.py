@@ -18,6 +18,9 @@ class test_Participant_Commands(Test_Helper):
     def test_info(self):
         self.result = Participant_Commands.info(None,'DJ8UA0RFT')
 
+    def test_view(self):
+        self.result = Participant_Commands.view(None,'DJ8UA0RFT',['OSS Bot'])
+
     def test_edit(self):
         self.result = Participant_Commands.edit(None,'DJ8UA0RFT',['OSS Bot,test_field,abc'])
 

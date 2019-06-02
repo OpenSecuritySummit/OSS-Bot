@@ -32,6 +32,12 @@ class OSS_Hugo:
             return "```{0}```".format(json.dumps(participant.metadata(),indent=2))
         return 'error: user not found'
 
+
+    def participant_url(self,event):
+        name = event.get('name')
+        participant = self.participant_get(name)
+        return participant.path_md_file.split('content/')[1].replace('.md', '')
+
     def participant_edit_field(self, event):
         name  = event.get('name')
         field = event.get('field')
