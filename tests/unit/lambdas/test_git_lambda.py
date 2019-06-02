@@ -24,20 +24,68 @@ class test_git_lambda(Test_Helper):
         return self.aws_lambda.update_code()
 
     def test_invoke_version(self):
-        self.test_update_lambda()
         payload = {'command': 'version' }
         self.result = self.aws_lambda.invoke(payload)
 
     def test_invoke_clone(self):
-        #self.test_update_lambda()
-        payload = {'command': 'clone' } #,'https://github.com/OpenSecuritySummit/oss2019.git' }
+        payload = {'command': 'clone' }
         self.result = self.aws_lambda.invoke(payload)
 
     def test_invoke_pull(self):
-        #self.test_update_lambda()
-        payload = {'command': 'pull'}  # ,'https://github.com/OpenSecuritySummit/oss2019.git' }
+        payload = {'command': 'pull'}
         self.result = self.aws_lambda.invoke(payload)
 
+    def test_invoke_change(self):
+        self.test_update_lambda()
+        self.aws_lambda.invoke({'command': 'clone'})
+        self.result = self.aws_lambda.invoke({'command': 'change'} )
+        print(self.aws_lambda.invoke({'command': 'status'}))
+        self.result = self.aws_lambda.invoke({'command': 'commit'})
+        print(self.aws_lambda.invoke({'command': 'status'}))
+        #self.result = self.aws_lambda.invoke({'command': 'push'})
+
+    def test_ssh_setup(self):
+        self.test_update_lambda()
+
+        print(self.aws_lambda.invoke({'command': 'ssh-create'}))
+        print(self.aws_lambda.invoke({'command': 'ssh-public-key'}))
+
+    def test_remote_setup(self):
+        self.test_update_lambda()
+        self.aws_lambda.invoke({'command': 'clone'})
+        print(self.aws_lambda.invoke({'command': 'remote-setup'}))
+
     def test_invoke_files(self):
-        payload = {'command': ''}  # ,'https://github.com/OpenSecuritySummit/oss2019.git' }
+        self.test_update_lambda()
+        self.aws_lambda.invoke({'command': 'clone'})
+        #self.aws_lambda.invoke({'command': 'clone'})
+        payload = {'command': '__files'}
         self.result = self.aws_lambda.invoke(payload)
+
+    def test_set_ssh_config(self):
+        self.test_update_lambda()
+        print(self.aws_lambda.invoke({'command': 'clone'}))
+        #print(self.aws_lambda.invoke({'command': 'ssh-public-key'}))
+        print(self.aws_lambda.invoke({'command': 'remote-setup'}))
+        print(self.aws_lambda.invoke({'command': 'ssh-config'}))
+        print(self.aws_lambda.invoke({'command': 'push'}))
+
+    def test_workflow(self):
+        self.test_update_lambda()
+        print(self.aws_lambda.invoke({'command': 'clone'}))
+        print(self.aws_lambda.invoke({'command': 'status'}))
+        print(self.aws_lambda.invoke({'command': 'change'}))
+        print(self.aws_lambda.invoke({'command': 'status'}))
+        print(self.aws_lambda.invoke({'command': 'commit'}))
+        print(self.aws_lambda.invoke({'command': 'status'}))
+        print(self.aws_lambda.invoke({'command': 'push'}))
+        #print(self.aws_lambda.invoke({'command': 'ssh-create'}))
+        #print(self.aws_lambda.invoke({'command': 'remote-setup'}))
+        #print(self.aws_lambda.invoke({'command': 'ssh-config'}))
+        #print(self.aws_lambda.invoke({'command': 'ssh-public-key'}))
+
+
+    def test_push(self):
+        self.test_update_lambda()
+        self.result = self.aws_lambda.invoke({'command': 'status'})
+        #print(self.aws_lambda.invoke({'command': 'push'}))
