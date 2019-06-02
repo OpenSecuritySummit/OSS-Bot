@@ -22,46 +22,58 @@ class OSS_Hugo:
 
         return  OSS_Participant(name=user_name, folder_oss=self.repo_path)
 
-    def participant_edit_field(self, name, field_name,field_value):
+    def participant_info(self, event):
+        return '....info goes here: {0}'.format(event)
+
+    def participant_edit_field(self, event):
+        name  = event.get('name')
+        field = event.get('field')
+        value = event.get('value')
         participant = self.participant_get(name)
         if participant.exists():
-            participant.field(field_name, field_value)
+            participant.field(field, value)
             participant.save()
             return True
         return False
 
-    def participant_append_to_field(self, name, field_name, field_value):
+    def participant_append_to_field(self, event):
+        name  = event.get('name')
+        field = event.get('field')
+        value = event.get('value')
         participant = self.participant_get(name)
         if participant.exists():
-            current_value = participant.field(field_name)
+            current_value = participant.field(field)
             if current_value:
                 if type(current_value) is list:
-                    new_value = current_value.append(field_value)
-                    participant.field(field_name, new_value)
+                    new_value = current_value.append(value)
+                    participant.field(field, new_value)
                 else:
-                    participant.field(field_name,current_value + field_value)
+                    participant.field(field,current_value + value)
             else:
-                participant.field(field_name, field_value)
+                participant.field(field, value)
             participant.save()
             return True
         return False
 
-    def participant_remove_from_field(self, name, field_name, field_value):
+    def participant_remove_from_field(self, event):
+        name  = event.get('name')
+        field = event.get('field')
+        value = event.get('value')
         participant = self.participant_get(name)
         if participant.exists():
-            current_value = participant.field(field_name)
+            current_value = participant.field(field)
             if current_value:
                 if type(current_value) is list:
-                    if field_value in current_value:
-                        current_value.remove(field_value)
-                        participant.field(field_name,current_value)
+                    if value in current_value:
+                        current_value.remove(value)
+                        participant.field(field,current_value)
                     else:
                         return False
                 else:
-                    new_value = current_value.replace(field_value, '')
-                    participant.field(field_name,new_value)
+                    new_value = current_value.replace(value, '')
+                    participant.field(field,new_value)
             else:
-                participant.field(field_name, field_value)
+                participant.field(field, value)
             participant.save()
             return True
         return False

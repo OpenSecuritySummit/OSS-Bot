@@ -2,13 +2,18 @@ from osbot_aws.apis.Lambda import Lambda
 from pbx_gs_python_utils.utils.Misc import Misc
 from pbx_gs_python_utils.utils.slack.Slack_Commands_Helper import Slack_Commands_Helper
 
+from oss_bot.api.commands.Participant_Commands import Participant_Commands
 from oss_bot.api.commands.Site_Commands import Site_Commands
 from oss_bot.api.commands.FAQ_Commands import FAQ_Commands
 
+def use_command_class(slack_event, params, target_class):
+    channel = Misc.get_value(slack_event, 'channel')
+    Slack_Commands_Helper(target_class).invoke(channel=channel, params=params)
+    return None,None
 
 class OSS_Bot_Commands:                                      # move to separate class
 
-    gsbot_version = 'v0.22'
+    gsbot_version = 'v0.32'
 
     @staticmethod
     def browser(slack_event=None, params=None):
@@ -51,7 +56,13 @@ class OSS_Bot_Commands:                                      # move to separate 
         return None,None
 
     @staticmethod
+    def participant(slack_event=None, params=None):
+        return use_command_class(slack_event,params,Participant_Commands)
+
+    @staticmethod
     def version(*params):
         return OSS_Bot_Commands.gsbot_version,[]
+
+
 
 

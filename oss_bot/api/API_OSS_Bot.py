@@ -4,7 +4,7 @@ import urllib
 
 from osbot_aws.apis.Secrets import Secrets
 
-from oss_bot.api.OSS_Bot_Commands import OSS_Bot_Commands
+from oss_bot.api.commands.OSS_Bot_Commands import OSS_Bot_Commands
 
 
 class API_OSS_Bot:
