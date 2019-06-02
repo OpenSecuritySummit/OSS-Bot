@@ -6,22 +6,30 @@ from oss_bot.lambdas.png_to_slack import load_dependency
 
 
 def run(event, context):
-    load_dependency('lambda-git')
-    load_dependency('frontmatter')
+    action = event.get('action')
+    name   = event.get('name')
+    field  = event.get('field')
+    value  = event.get('value')
+    user   = event.get('user')
 
-    command = event.get('command')
+    if user is None:
+        user = 'OSS_Bot'
 
-    from oss_bot.api_in_lambda.Git_Lambda import Git_Lambda
-    from oss_bot.api_in_lambda.OSS_Hugo   import OSS_Hugo
-    git_lambda = Git_Lambda('oss2019')
-    git_lambda.clone().exists()
+    if action and name and field and value:
+        load_dependency('lambda-git')
+        load_dependency('frontmatter')
 
-    #return git_lambda.repo_files()
-    #return git_lambda.status()
-    #return git_lambda.log_pretty()
-    #return git_lambda.pull()
-
-    OSS_Hugo().edit_user()
-    git_lambda.commit()
-    git_lambda.push()
-    return 'all done'
+        from oss_bot.api_in_lambda.OSS_Hugo   import OSS_Hugo
+        try:
+            oss_hugo = OSS_Hugo().setup()
+            method   = getattr(oss_hugo,action)
+            if method(name, field, value):
+                commit_message = 'Lambda change, requested by user: {0} \n' \
+                                 ' - action: {1} \n'             \
+                                 ' - field: {2}  \n'             \
+                                 ' - value: {3}'                 .format(user, action, field, value)
+                oss_hugo.git_commit_and_push(commit_message)
+                return {'status': 'ok'}
+        except Exception as error:
+            return {'status': 'error', 'data': "{0}".format(error)}
+    return {'status': 'error', 'data': 'error occurred when updating data'}
