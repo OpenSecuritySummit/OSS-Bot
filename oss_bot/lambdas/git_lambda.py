@@ -30,7 +30,7 @@ def run(event, context):
             oss_hugo = OSS_Hugo().setup()
             method   = getattr(oss_hugo,action)
 
-            result = method(event)#name, field, value)
+            result = method(event) #name, field, value)
             if commit:
                 commit_message = 'Lambda change, requested by user: {0} \n' \
                                  ' - action: {1} \n'             \

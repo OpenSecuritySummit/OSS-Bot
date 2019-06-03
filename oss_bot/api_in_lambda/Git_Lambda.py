@@ -67,6 +67,9 @@ class Git_Lambda:
             self.git_exec('clone' , self.repo_url()    , cwd=self.path_temp)
         return self
 
+    def diff (self):
+        return self.git_exec('diff')
+
     def log_pretty(self):
         return self.git_exec('log', '--pretty=oneline', '-n10')
 

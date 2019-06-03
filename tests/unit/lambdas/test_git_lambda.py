@@ -33,6 +33,18 @@ class test_git_lambda(Test_Helper):
         payload = {'command': '__files'}
         self.result = self.aws_lambda.invoke(payload)
 
+    def test_git_status(self):
+        self.test_update_lambda()
+        payload = { 'action': 'git_status',
+                    'commit': False       }
+        self.result = self.aws_lambda.invoke(payload)
+
+    def test_git_diff(self):
+        self.test_update_lambda()
+        payload = { 'action': 'git_diff',
+                    'commit': False       }
+        self.result = self.aws_lambda.invoke(payload)
+
     def test_participant_info(self):
         self.test_update_lambda()
         payload = { 'action': 'participant_info',

@@ -12,6 +12,13 @@ class OSS_Hugo:
         self.git_lambda.clone()                     # clone (if needed)
         return self
 
+    def git_status(self, _):
+        return "{0}".format(self.git_lambda.status())
+
+    def git_diff(self, _):
+        return "{0}".format(self.git_lambda.diff())
+
+
     def git_commit_and_push(self,commit_message):
         self.git_lambda.pull()
         self.git_lambda.commit(commit_message)
