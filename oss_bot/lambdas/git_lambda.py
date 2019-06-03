@@ -21,8 +21,9 @@ def run(event, context):
         user = 'OSS_Bot'
 
     if action:
-        load_dependency('lambda-git')
+        load_dependency('lambda-git' )
         load_dependency('frontmatter')
+
 
         from oss_bot.api_in_lambda.OSS_Hugo   import OSS_Hugo
         try:

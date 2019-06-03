@@ -33,12 +33,6 @@ class API_OSS_Bot:
                 command = slack_event.get('text').replace('<@UJ3RRH17C>', '').strip()           # UJ3RRH17C is the oss_bot slack ids
                 if not command:
                     command = 'hello'
-                    #return None, None
-                # log_debug('command: {0}  |  team_id: {1} | channel: {2} | user: {3} '.format(command,
-                #                                                                              slack_event.get('team_id'),
-                #                                                                              slack_event.get('channel'),
-                #                                                                              slack_event.get('user')), category='API_GS_Bot.handle_command')
-                #refactor code below to separate method
                 method_name = command.split(' ')[0].split('\n')[0]
 
                 method             = self.resolve_command_method(command)                    # find method to invoke

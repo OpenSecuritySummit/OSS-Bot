@@ -1,7 +1,6 @@
 from osbot_aws.apis.Lambda import Lambda
-from pbx_gs_python_utils.utils.Lambdas_Helpers import slack_message
+from oss_bot.api.API_OSS_Slack import API_OSS_Slack
 
-from oss_bot.api.commands import Site_Commands
 
 def send_screenshot_to_slack(path, channel, extra_params: list):
     if path is None: path = ''
@@ -15,6 +14,11 @@ def send_screenshot_to_slack(path, channel, extra_params: list):
 
 class Participant_Commands:
 
+    @staticmethod
+    def me(slack_id=None, channel=None, params=None):
+
+        name = API_OSS_Slack().slack_id_to_slack_full_name(slack_id)
+        return Participant_Commands.view(slack_id, channel, [name])
 
     @staticmethod
     def info(team_id=None, channel=None, params=None):
@@ -91,3 +95,5 @@ class Participant_Commands:
                    'field': field,
                    'value': value}
         aws_lambda.invoke_async(payload)
+
+
