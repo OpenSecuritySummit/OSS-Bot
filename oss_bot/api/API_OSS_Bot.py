@@ -22,7 +22,7 @@ class API_OSS_Bot:
 
     def resolve_command_method(self, command):
         try:
-            method_name = command.split(' ')[0].split('\n')[0]
+            method_name = command.split(' ')[0].split('\n')[0].lower()
             return getattr(OSS_Bot_Commands,method_name)
         except:
             return None
@@ -30,7 +30,7 @@ class API_OSS_Bot:
     def handle_command(self, slack_event):
         try:
             if slack_event.get('text'):
-                command = slack_event.get('text').replace('<@UJ3RRH17C>', '').strip()           # UJ3RRH17C is the oss_bot slack ids
+                command = slack_event.get('text').replace('<@UJ3RRH17C>', '').strip()          # UJ3RRH17C is the oss_bot slack ids
                 if not command:
                     command = 'hello'
                 method_name = command.split(' ')[0].split('\n')[0]

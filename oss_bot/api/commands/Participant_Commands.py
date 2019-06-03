@@ -1,4 +1,6 @@
 from osbot_aws.apis.Lambda import Lambda
+from pbx_gs_python_utils.utils.Lambdas_Helpers import slack_message
+
 from oss_bot.api.API_OSS_Slack import API_OSS_Slack
 
 
@@ -42,7 +44,8 @@ class Participant_Commands:
             path = result.get('data')
             send_screenshot_to_slack(path,channel,[1200])
         else:
-            return ":red_circle: error, couldn't find url for `{0}".format(name)
+            slack_message(":red_circle: Sorry, couldn't find url for `{0}`".format(name),[],channel)
+            return ":red_circle: Sorry, couldn't find url for `{0}`".format(name)
 
 
     @staticmethod

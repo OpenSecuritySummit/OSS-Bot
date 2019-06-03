@@ -33,7 +33,7 @@ class Schedule_Commands:
         text = 'participant view {0}'.format(name)
         from osbot_aws.apis.Lambda import Lambda
         aws_lambda = Lambda('oss_bot.lambdas.oss_bot')
-        aws_lambda.invoke_async({'event': {'type': 'message', 'text': text, "channel": "DJ8UA0RFT"}})
+        aws_lambda.invoke_async({'event': {'type': 'message', 'text': text, "channel": channel}})
         # Participant_Commands.view(slack_id, channel, [name])
 
     @staticmethod

@@ -5,6 +5,7 @@ from pbx_gs_python_utils.utils.slack.Slack_Commands_Helper import Slack_Commands
 from oss_bot.api.commands.Dev_Commands import Dev_Commands
 from oss_bot.api.commands.Participant_Commands import Participant_Commands
 from oss_bot.api.commands.Schedule_Commands import Schedule_Commands
+from oss_bot.api.commands.Sessions_Commands import Sessions_Commands
 from oss_bot.api.commands.Site_Commands import Site_Commands
 from oss_bot.api.commands.FAQ_Commands import FAQ_Commands
 
@@ -16,7 +17,7 @@ def use_command_class(slack_event, params, target_class):
 
 class OSS_Bot_Commands:                                      # move to separate class
 
-    gsbot_version = 'v0.45'
+    gsbot_version = 'v0.46'
 
     @staticmethod
     def browser(slack_event=None, params=None):
@@ -81,6 +82,10 @@ class OSS_Bot_Commands:                                      # move to separate 
     @staticmethod
     def schedule(slack_event=None, params=None):
         return use_command_class(slack_event, params, Schedule_Commands)
+
+    @staticmethod
+    def sessions(slack_event=None, params=None):
+        return use_command_class(slack_event, params, Sessions_Commands)
 
     @staticmethod
     def version(*params):
