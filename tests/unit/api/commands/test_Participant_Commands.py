@@ -29,5 +29,6 @@ class test_Participant_Commands(Test_Helper):
     def test_deploy_lambda__oss_bot(self):
         Deploy().setup().deploy_lambda__oss_bot()
 
+
     def test_deploy_lambda__git_lambda(self):
         return Deploy().deploy_lambda__git_lambda()

@@ -29,3 +29,8 @@ class test_run_command(Test_Helper):
     def test_invoke_with_channel(self):
         self.update_lambda()
         self.result = self.aws_lambda.invoke({'event': {'type': 'message', 'text': 'help', "channel": "DJ8UA0RFT"}})
+
+    def test_participant_view(self):
+        self.update_lambda()
+        text = 'participant view Dinis Cruz'
+        self.result = self.aws_lambda.invoke({'event': {'type': 'message', 'text': text, "channel": "DJ8UA0RFT"}})
