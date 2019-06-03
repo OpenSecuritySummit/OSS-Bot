@@ -29,6 +29,9 @@ class Site_Commands:
     @staticmethod
     def tracks      (*event):  return send_screenshot_to_slack('tracks'      , event[1], [1200]  )
 
+    @staticmethod
+    def venue_map   (*event):  return send_screenshot_to_slack('img/venue-map.jpg'      , event[1], event[2]  )
+
 
     @staticmethod
     def page(*event):
