@@ -18,12 +18,17 @@ class OSS_Hugo:
     def git_diff(self, _):
         return "{0}".format(self.git_lambda.diff())
 
-
     def git_commit_and_push(self,commit_message):
         self.git_lambda.pull()
         self.git_lambda.commit(commit_message)
         self.git_lambda.push()
         return self
+
+    def git_reset(self, _):
+        return "{0}".format(self.git_lambda.reset_hard())
+
+    def git_pull(self, _):
+        return "{0}".format(self.git_lambda.pull())
 
     def participant_get(self, user_name):
         import sys

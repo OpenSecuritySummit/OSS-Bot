@@ -84,7 +84,8 @@ class Git_Lambda:
     def status (self):
         return self.git_exec('status')
 
-
+    def reset_hard (self):
+        return self.git_exec('reset','--hard','HEAD')
 
 
 

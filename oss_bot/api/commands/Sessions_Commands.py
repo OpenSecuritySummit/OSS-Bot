@@ -87,3 +87,35 @@ class Sessions_Commands:
         aws_lambda = Lambda('oss_bot.lambdas.oss_bot')
         aws_lambda.invoke_async({'event': {'type': 'message', 'text': command, "channel": channel}})
 
+
+    @staticmethod
+    def git_diff(team_id=None, channel=None, params=None):
+        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
+        payload = {'action' : 'git_dff' ,
+                   'channel': channel            ,
+                   'commit' : False              }
+        aws_lambda.invoke_async(payload)
+
+    @staticmethod
+    def git_status(team_id=None, channel=None, params=None):
+        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
+        payload = {'action': 'git_status',
+                   'channel': channel,
+                   'commit': False}
+        aws_lambda.invoke_async(payload)
+
+    @staticmethod
+    def git_pull(team_id=None, channel=None, params=None):
+        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
+        payload = {'action': 'git_pull',
+                   'channel': channel,
+                   'commit': False}
+        aws_lambda.invoke_async(payload)
+
+    @staticmethod
+    def git_reset(team_id=None, channel=None, params=None):
+        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
+        payload = {'action': 'git_reset',
+                   'channel': channel,
+                   'commit': False}
+        aws_lambda.invoke_async(payload)
