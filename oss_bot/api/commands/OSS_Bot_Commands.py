@@ -2,12 +2,13 @@ from osbot_aws.apis.Lambda import Lambda
 from pbx_gs_python_utils.utils.Misc import Misc
 from pbx_gs_python_utils.utils.slack.Slack_Commands_Helper import Slack_Commands_Helper
 
-from oss_bot.api.commands.Dev_Commands import Dev_Commands
-from oss_bot.api.commands.Participant_Commands import Participant_Commands
-from oss_bot.api.commands.Schedule_Commands import Schedule_Commands
-from oss_bot.api.commands.Sessions_Commands import Sessions_Commands
-from oss_bot.api.commands.Site_Commands import Site_Commands
-from oss_bot.api.commands.FAQ_Commands import FAQ_Commands
+from oss_bot.api.commands.Maps_Commands         import Maps_Commands
+from oss_bot.api.commands.Dev_Commands          import Dev_Commands
+from oss_bot.api.commands.Participant_Commands  import Participant_Commands
+from oss_bot.api.commands.Schedule_Commands     import Schedule_Commands
+from oss_bot.api.commands.Sessions_Commands     import Sessions_Commands
+from oss_bot.api.commands.Site_Commands         import Site_Commands
+from oss_bot.api.commands.FAQ_Commands          import FAQ_Commands
 
 def use_command_class(slack_event, params, target_class):
     channel = Misc.get_value(slack_event, 'channel')
@@ -17,7 +18,7 @@ def use_command_class(slack_event, params, target_class):
 
 class OSS_Bot_Commands:                                      # move to separate class
 
-    gsbot_version = 'v0.46'
+    gsbot_version = 'v0.47'
 
     @staticmethod
     def browser(slack_event=None, params=None):
@@ -61,19 +62,14 @@ class OSS_Bot_Commands:                                      # move to separate 
     @staticmethod
     def site(slack_event=None, params=None):
         return use_command_class(slack_event, params, Site_Commands)
-        #team_id = Misc.get_value(slack_event, 'team_id')
-        #channel = Misc.get_value(slack_event, 'channel')
-        #Slack_Commands_Helper(Site_Commands).invoke(team_id, channel, params)
-        #return None,None
 
     @staticmethod
     def faq(slack_event=None, params=None):
         return use_command_class(slack_event, params, FAQ_Commands)
 
-        #team_id = Misc.get_value(slack_event, 'team_id')
-        #channel = Misc.get_value(slack_event, 'channel')
-        #Slack_Commands_Helper(FAQ_Commands).invoke(team_id, channel, params)
-        #return None,None
+    @staticmethod
+    def maps(slack_event=None, params=None):
+        return use_command_class(slack_event, params, Maps_Commands)
 
     @staticmethod
     def participant(slack_event=None, params=None):

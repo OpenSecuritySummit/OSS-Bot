@@ -1,3 +1,5 @@
+from osbot_aws.apis.Lambda import Lambda
+
 from oss_bot.api.API_OSS_Slack import API_OSS_Slack
 
 class Dev_Commands:
@@ -14,3 +16,36 @@ class Dev_Commands:
     def resolve(slack_id, channel, params):
         slack_id= "".join(params).replace('<@','').replace('>','')
         return API_OSS_Slack().slack_id_to_slack_full_name(slack_id)
+
+
+    @staticmethod
+    def git_diff(team_id=None, channel=None, params=None):
+        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
+        payload = {'action' : 'git_dff' ,
+                   'channel': channel            ,
+                   'commit' : False              }
+        aws_lambda.invoke_async(payload)
+
+    @staticmethod
+    def git_status(team_id=None, channel=None, params=None):
+        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
+        payload = {'action': 'git_status',
+                   'channel': channel,
+                   'commit': False}
+        aws_lambda.invoke_async(payload)
+
+    @staticmethod
+    def git_pull(team_id=None, channel=None, params=None):
+        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
+        payload = {'action': 'git_pull',
+                   'channel': channel,
+                   'commit': False}
+        aws_lambda.invoke_async(payload)
+
+    @staticmethod
+    def git_reset(team_id=None, channel=None, params=None):
+        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
+        payload = {'action': 'git_reset',
+                   'channel': channel,
+                   'commit': False}
+        aws_lambda.invoke_async(payload)

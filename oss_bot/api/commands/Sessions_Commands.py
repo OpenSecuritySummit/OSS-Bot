@@ -35,10 +35,6 @@ class Sessions_Commands:
             slack_message(text, attachments,channel)
 
     @staticmethod
-    def _add_thread(slack_id=None, channel=None, params=None):
-        slack_message('in _add_thread', [], channel)
-
-    @staticmethod
     def add(slack_id=None, channel=None, params=None):
         if len(params) == 0:
             return ":red_circle: Hi, you need to provide the title of session to add"
@@ -56,20 +52,6 @@ class Sessions_Commands:
         aws_lambda.invoke_async({'event': {'type': 'message', 'text': command, "channel": channel}})
 
 
-        # text       = ":point_right: adding the session `{0}` to the user `{1}`".format(value, name)
-        # slack_message(text, [], channel)
-        #
-        # aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
-        # payload    = {'action': 'participant_append_to_field',
-        #            'name'   : name,
-        #            #'channel': channel,
-        #            'field'  : 'sessions',
-        #            'value'  : value}
-        # result = aws_lambda.invoke(payload)
-        # text = ":point_right: result = {0}".format(result)
-        # slack_message(text, [], channel)
-        # Sessions_Commands.list(slack_id,channel,None)
-
     @staticmethod
     def remove(slack_id=None, channel=None, params=None):
         if len(params) == 0:
@@ -86,36 +68,3 @@ class Sessions_Commands:
         command = "participant remove {0},sessions,{1}".format(name, value)
         aws_lambda = Lambda('oss_bot.lambdas.oss_bot')
         aws_lambda.invoke_async({'event': {'type': 'message', 'text': command, "channel": channel}})
-
-
-    @staticmethod
-    def git_diff(team_id=None, channel=None, params=None):
-        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
-        payload = {'action' : 'git_dff' ,
-                   'channel': channel            ,
-                   'commit' : False              }
-        aws_lambda.invoke_async(payload)
-
-    @staticmethod
-    def git_status(team_id=None, channel=None, params=None):
-        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
-        payload = {'action': 'git_status',
-                   'channel': channel,
-                   'commit': False}
-        aws_lambda.invoke_async(payload)
-
-    @staticmethod
-    def git_pull(team_id=None, channel=None, params=None):
-        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
-        payload = {'action': 'git_pull',
-                   'channel': channel,
-                   'commit': False}
-        aws_lambda.invoke_async(payload)
-
-    @staticmethod
-    def git_reset(team_id=None, channel=None, params=None):
-        aws_lambda = Lambda('oss_bot.lambdas.git_lambda')
-        payload = {'action': 'git_reset',
-                   'channel': channel,
-                   'commit': False}
-        aws_lambda.invoke_async(payload)

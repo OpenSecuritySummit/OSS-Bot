@@ -32,3 +32,7 @@ class test_Deploy(TestCase):
         self.result  = lambda_package._lambda.invoke()
 
 
+    def test_lambda_browser(self):
+        self.test_deploy_lambda__browser()
+        from osbot_aws.apis.Lambda import Lambda
+        self.result = Lambda('osbot_browser.lambdas.lambda_browser').invoke({})
