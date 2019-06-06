@@ -9,15 +9,15 @@ class Maps_Commands:
     @staticmethod
     def cup_of_tea(*event):
         aws_lambda = Lambda('osbot_browser.lambdas.lambda_browser')
-        payload = {"params": ["render", "examples/wardley_map/cup-of-tea.html"],
+        payload = {"params": ["maps", "render", "cup-of-tea"],
                    'data': {'channel': event[1]}}
-        return aws_lambda.invoke_async(payload)
+        aws_lambda.invoke_async(payload)
 
     @staticmethod
-    def simple(*event):
+    def template(*event):
         aws_lambda = Lambda('osbot_browser.lambdas.lambda_browser')
-        payload = {"params": ["render", "examples/wardley_map/simple.html"],
+        payload = {"params": ["maps", "default"],
                    'data': {'channel': event[1]}}
-        return aws_lambda.invoke_async(payload)
+        aws_lambda.invoke_async(payload)
 
 
