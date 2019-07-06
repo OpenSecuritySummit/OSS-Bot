@@ -73,3 +73,14 @@ class Deploy:
         return package
 
 
+    def deploy_lambda__slack_web(self):
+        package = self.get_package('osbot_browser.lambdas.slack_web')
+        source_folder = Files.path_combine(__file__,'../../modules/OSBot-Browser/osbot_browser')
+        package.add_folder(source_folder)
+        package.add_module('osbot_aws')
+        package.add_module('oss_bot')
+        package.add_pbx_gs_python_utils()
+        package.update()
+        return package
+
+
