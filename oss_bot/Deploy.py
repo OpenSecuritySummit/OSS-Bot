@@ -68,7 +68,16 @@ class Deploy:
         package.add_module('osbot_aws')
         package.add_module('oss_bot')
         package.add_pbx_gs_python_utils()
-        #package.delete()
+        package.update()
+        return package
+
+    def deploy_lambda_puml_to_png(self):
+        lambda_name = 'utils_puml_to_png'
+        package = self.get_package(lambda_name)
+        package._lambda.handler = 'oss_bot.lambdas.puml_to_png.run'
+        package.add_module('osbot_aws')
+        package.add_module('oss_bot')
+        package.add_pbx_gs_python_utils()
         package.update()
         return package
 
